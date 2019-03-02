@@ -9,24 +9,29 @@ class Users extends React.Component {
   componentDidMount() {
     this.props.fetchUsersStart();
   }
+  renderUsers = () => {
+    const { users } = this.props;
+
+    return users.length ? (
+      <ul>
+        {users.map(user => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    ) : (
+      ""
+    );
+  };
   render() {
-    const { users, loading, error } = this.props;
-
-    if (error) {
-      return <div>{error}</div>;
-    }
-
-    if (loading) {
-      return <Loading />;
-    }
+    const { loading, error } = this.props;
 
     return (
       <React.Fragment>
         <h1>Users List</h1>
-        <ul>
-          {users.length &&
-            users.map(user => <li key={user.id}>{user.name}</li>)}
-        </ul>
+        {error}
+        {loading && <Loading />}
+
+        {this.renderUsers()}
       </React.Fragment>
     );
   }
