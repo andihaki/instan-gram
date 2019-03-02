@@ -29,6 +29,6 @@ export const fetchUsersStart = () => {
     axios
       .get(URL)
       .then(response => dispatch(fetchUsersSuccess(response.data)))
-      .catch(error => dispatch(fetchUsersError(error)));
+      .catch(error => dispatch(fetchUsersError(error.message)));
   };
 };
