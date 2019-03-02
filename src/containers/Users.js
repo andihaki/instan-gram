@@ -1,23 +1,16 @@
 import React from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+
+import { fetchUsersStart } from "../store/actions/usersAct";
+
+import Loading from "../components/Loading";
 
 class Users extends React.Component {
-  state = {
-    users: [],
-    isLoading: false,
-    isError: false
-  };
-  getUsers() {
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then(response => this.setState({ users: response.data }))
-      .catch(error => console.error(error));
-  }
   componentDidMount() {
-    this.getUsers();
+    this.props.fetchUsersStart();
   }
   render() {
-    const { users } = this.state;
+    const { users } = this.props;
     let userList = "";
 
     if (users.length) {
@@ -29,6 +22,13 @@ class Users extends React.Component {
         </ul>
       );
     }
+
+    console.log(this.props);
+
+    if (!users) {
+      return <Loading />;
+    }
+
     return (
       <React.Fragment>
         <h1>Users List</h1>
@@ -38,4 +38,20 @@ class Users extends React.Component {
   }
 }
 
-export default Users;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    users: state.users
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchUsersStart: () => dispatch(fetchUsersStart())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users);
