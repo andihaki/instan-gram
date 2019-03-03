@@ -1,21 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-import { List, Avatar } from "antd";
-import Loading from "../components/Loading";
+import { List, Avatar, Alert } from "antd";
 import Logo from "../logo.svg";
 
-const Users = ({ data, loading }) =>
-  loading ? (
-    <Loading />
+const Users = ({ data, loading, error, clickedUrl }) =>
+  error ? (
+    <Alert message={error} type="warning" showIcon />
   ) : (
     <List
       itemLayout="horizontal"
       dataSource={data}
+      loading={loading}
       renderItem={item => (
-        <List.Item>
+        <List.Item onClick={() => clickedUrl(item.id)}>
           <List.Item.Meta
             avatar={<Avatar src={Logo} />}
-            title={<a href="https://ant.design">{item.username}</a>}
+            title={<Link to={"/" + item.id + "/posts"}>{item.username}</Link>}
             description={item.name + " - " + item.phone + " - " + item.email}
           />
         </List.Item>

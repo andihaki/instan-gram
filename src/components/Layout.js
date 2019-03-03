@@ -1,8 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-// import { fetchUsersStart } from "../store/actions/usersAct";
-
 import { Layout, Menu, Breadcrumb } from "antd";
 const { Header, Content, Footer } = Layout;
 
@@ -10,8 +8,8 @@ const CustomLayout = props => {
   // console.log(window && window.location.pathname);
   // console.log(props);
   const { children } = props;
-  const breadcrumb =
-    (window && window.location.pathname.replace("/", "")) || "Home";
+  let breadcrumb = props.location.pathname.replace("/", "") || "Home";
+  breadcrumb = breadcrumb.split("/")[1] || breadcrumb;
 
   const fetchUsers = () => {
     // console.log(props);
