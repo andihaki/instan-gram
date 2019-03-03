@@ -1,10 +1,11 @@
 import React from "react";
+
 import { Link } from "react-router-dom";
 
 import { List, Avatar, Alert } from "antd";
 import Logo from "../logo.svg";
 
-const UserPosts = ({ data, loading, error, fetchPostCommentsStart }) =>
+const PostComments = ({ data, loading, error, fetchAlbumPhotosStart }) =>
   error ? (
     <Alert message={error} type="warning" showIcon />
   ) : (
@@ -12,14 +13,15 @@ const UserPosts = ({ data, loading, error, fetchPostCommentsStart }) =>
       itemLayout="horizontal"
       dataSource={data}
       loading={loading}
+      pagination="true"
       renderItem={item => (
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar src={Logo} />}
             title={
               <Link
-                to={"/" + item.userId + "/post/" + item.id}
-                onClick={() => fetchPostCommentsStart(item.id)}
+                to={"/" + item.userId + "/album/" + item.id}
+                onClick={() => fetchAlbumPhotosStart(item.id)}
               >
                 {item.title}
               </Link>
@@ -31,6 +33,4 @@ const UserPosts = ({ data, loading, error, fetchPostCommentsStart }) =>
     />
   );
 
-// const UserPosts = props => console.log(props);
-
-export default UserPosts;
+export default PostComments;

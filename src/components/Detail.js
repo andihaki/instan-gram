@@ -21,8 +21,6 @@ const Detail = ({ userId, fetchUserPostsStart, fetchUserAlbumsStart }) => (
     >
       Albums
     </Link>
-    <Divider type="vertical" />
-    <Link to={"/" + userId + "/photos"}>Photos</Link>
   </div>
 );
 

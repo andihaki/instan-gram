@@ -19,19 +19,10 @@ const Users = ({
       dataSource={data}
       loading={loading}
       renderItem={item => (
-        <List.Item
-        /*onClick={() => clickedUrl(item.id)}*/
-        >
+        <List.Item>
           <List.Item.Meta
             avatar={<Avatar src={Logo} />}
-            title={
-              /*
-              <Link to={"/" + item.id + "/posts"}>
-                {item.username} ({item.name})
-              </Link>
-              */
-              item.username + "(" + item.name + ")"
-            }
+            title={item.username + "(" + item.name + ")"}
             description={
               <Detail
                 userId={item.id}

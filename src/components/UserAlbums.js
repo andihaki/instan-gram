@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { List, Avatar, Alert } from "antd";
 import Logo from "../logo.svg";
 
-const UserAlbums = ({ data, loading, error }) =>
+const UserAlbums = ({ data, loading, error, fetchAlbumPhotosStart }) =>
   error ? (
     <Alert message={error} type="warning" showIcon />
   ) : (
@@ -17,7 +17,14 @@ const UserAlbums = ({ data, loading, error }) =>
         <List.Item>
           <List.Item.Meta
             avatar={<Avatar src={Logo} />}
-            title={<Link to="https://ant.design">{item.title}</Link>}
+            title={
+              <Link
+                to={"/" + item.userId + "/album/" + item.id}
+                onClick={() => fetchAlbumPhotosStart(item.id)}
+              >
+                {item.title}
+              </Link>
+            }
             description={item.body}
           />
         </List.Item>
