@@ -15,6 +15,7 @@ const Home = () => <h1>HEY TAYO!!</h1>;
 const Oops = () => <h1>Not Found</h1>;
 const Users = React.lazy(() => import("./components/Users"));
 const UserPosts = React.lazy(() => import("./components/UserPosts"));
+const Detail = React.lazy(() => import("./components/Detail"));
 
 class App extends Component {
   componentDidMount() {
@@ -42,6 +43,10 @@ class App extends Component {
             <Route
               path="/:userId/posts"
               component={withSuspense(UserPosts, this.props)}
+            />
+            <Route
+              path="/:userId"
+              component={withSuspense(Detail, this.props)}
             />
             <Route component={Oops} />
           </Switch>

@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { List, Avatar, Alert } from "antd";
 import Logo from "../logo.svg";
+import Detail from "../components/Detail";
 
 const Users = ({ data, loading, error, clickedUrl }) =>
   error ? (
@@ -13,12 +13,15 @@ const Users = ({ data, loading, error, clickedUrl }) =>
       dataSource={data}
       loading={loading}
       renderItem={item => (
-        <List.Item onClick={() => clickedUrl(item.id)}>
+        <List.Item
+        /*onClick={() => clickedUrl(item.id)}*/
+        >
           <List.Item.Meta
             avatar={<Avatar src={Logo} />}
-            title={<Link to={"/" + item.id + "/posts"}>{item.username}</Link>}
-            description={item.name + " - " + item.phone + " - " + item.email}
+            title={item.username + " (" + item.name + ")"}
+            description={<Detail userId={item.id} />}
           />
+          {item.email} | company: {item.company.name}
         </List.Item>
       )}
     />
