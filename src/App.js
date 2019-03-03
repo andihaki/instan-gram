@@ -19,9 +19,10 @@ import Loading from "./components/Loading";
 
 const Home = () => <h1>HEY TAYO!!</h1>;
 const Oops = () => <h1>Not Found</h1>;
+const Profile = () => <h1>My Profile</h1>;
+
 const Users = React.lazy(() => import("./components/Users"));
 const UserPosts = React.lazy(() => import("./components/UserPosts"));
-const Detail = React.lazy(() => import("./components/Detail"));
 const UserAlbums = React.lazy(() => import("./components/UserAlbums"));
 const AlbumPhotos = React.lazy(() => import("./components/AlbumPhotos"));
 const Post = React.lazy(() => import("./components/Post"));
@@ -38,13 +39,13 @@ class App extends Component {
       fetchUsersStart();
     }
 
-    if (/posts\//i.test(currentUrl)) {
+    if (/posts/i.test(currentUrl)) {
       fetchUserPostsStart(parseInt(currentUrl.split("/")[0]));
     }
     if (/post\//i.test(currentUrl)) {
       fetchPostCommentsStart(parseInt(currentUrl.split("/")[0]));
     }
-    if (/albums\//i.test(currentUrl)) {
+    if (/albums/i.test(currentUrl)) {
       fetchUserAlbumsStart(parseInt(currentUrl.split("/")[0]));
     }
     if (/album\//i.test(currentUrl)) {
@@ -78,10 +79,7 @@ class App extends Component {
               path="/:userId/album/:albumId"
               component={withSuspense(AlbumPhotos, this.props)}
             />
-            <Route
-              path="/:userId"
-              component={withSuspense(Detail, this.props)}
-            />
+            <Route path="/profile" component={Profile} />
             <Route component={Oops} />
           </Switch>
         </CustomLayout>

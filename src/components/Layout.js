@@ -40,6 +40,9 @@ const CustomLayout = props => {
           <Menu.Item key="3">
             <NavLink to="/not-found">404</NavLink>
           </Menu.Item>
+          <Menu.Item key="4" style={{ float: "right" }}>
+            <NavLink to="/profile">Profile</NavLink>
+          </Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: "0 50px", marginTop: 64 }}>
@@ -52,7 +55,7 @@ const CustomLayout = props => {
           {children}
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>InstanGram ©2019</Footer>
+      <Footer style={{ textAlign: "center" }}>InstanGram © 2019</Footer>
     </Layout>
   );
 };
