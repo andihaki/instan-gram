@@ -7,6 +7,7 @@ import CustomLayout from "./components/Layout";
 import { connect } from "react-redux";
 import { fetchUsersStart } from "./store/actions/usersAct";
 import { fetchUserPostsStart } from "./store/actions/userPostsAct";
+import { fetchUserAlbumsStart } from "./store/actions/userAlbumsAct";
 
 // import Users from "./containers/Users";
 import Loading from "./components/Loading";
@@ -16,6 +17,7 @@ const Oops = () => <h1>Not Found</h1>;
 const Users = React.lazy(() => import("./components/Users"));
 const UserPosts = React.lazy(() => import("./components/UserPosts"));
 const Detail = React.lazy(() => import("./components/Detail"));
+const UserAlbums = React.lazy(() => import("./components/UserAlbums"));
 
 class App extends Component {
   componentDidMount() {
@@ -27,6 +29,9 @@ class App extends Component {
     // naif, replace with regex soon
     if (currentUrl.includes("posts")) {
       this.props.fetchUserPostsStart(parseInt(currentUrl.split("/")[0]));
+    }
+    if (currentUrl.includes("albums")) {
+      this.props.fetchUserAlbumsStart(parseInt(currentUrl.split("/")[0]));
     }
   }
   render() {
@@ -45,6 +50,10 @@ class App extends Component {
               component={withSuspense(UserPosts, this.props)}
             />
             <Route
+              path="/:userId/albums"
+              component={withSuspense(UserAlbums, this.props)}
+            />
+            <Route
               path="/:userId"
               component={withSuspense(Detail, this.props)}
             />
@@ -59,8 +68,9 @@ class App extends Component {
 const withSuspense = (Component, props) => {
   const { loading, error } = props;
   const { users, userPosts, fetchUserPostsStart } = props;
+  const { userAlbums, fetchUserAlbumsStart } = props;
   const currentUrl = props.location.pathname.replace("/", "") || "Home";
-  let data = null;
+  let data = [];
 
   if (currentUrl === "friends") {
     data = users;
@@ -69,6 +79,10 @@ const withSuspense = (Component, props) => {
   if (currentUrl.includes("posts")) {
     data = userPosts;
   }
+  if (currentUrl.includes("albums")) {
+    data = userAlbums;
+  }
+
   return props => (
     <React.Suspense fallback={<Loading />}>
       <Component
@@ -76,7 +90,8 @@ const withSuspense = (Component, props) => {
         data={data}
         loading={loading}
         error={error}
-        clickedUrl={id => fetchUserPostsStart(id)}
+        fetchUserPostsStart={fetchUserPostsStart}
+        fetchUserAlbumsStart={fetchUserAlbumsStart}
       />
     </React.Suspense>
   );
@@ -88,14 +103,16 @@ const mapStateToProps = state => {
     error: state.ui.error,
 
     users: state.users,
-    userPosts: state.userPosts
+    userPosts: state.userPosts,
+    userAlbums: state.userAlbums
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchUsersStart: () => dispatch(fetchUsersStart()),
-    fetchUserPostsStart: userId => dispatch(fetchUserPostsStart(userId))
+    fetchUserPostsStart: userId => dispatch(fetchUserPostsStart(userId)),
+    fetchUserAlbumsStart: userId => dispatch(fetchUserAlbumsStart(userId))
   };
 };
 

@@ -4,11 +4,13 @@ import thunk from "redux-thunk";
 import users from "./reducers/users";
 import userPosts from "./reducers/userPosts";
 import ui from "./reducers/ui";
+import userAlbums from "./reducers/userAlbums";
 
 const reducers = combineReducers({
   users: users,
   userPosts: userPosts,
-  ui: ui
+  ui: ui,
+  userAlbums: userAlbums
 });
 
 // dev tools
