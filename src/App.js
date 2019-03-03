@@ -6,7 +6,10 @@ import "antd/dist/antd.css";
 import CustomLayout from "./components/Layout";
 import { connect } from "react-redux";
 import { fetchUsersStart } from "./store/actions/usersAct";
-import { fetchUserPostsStart } from "./store/actions/userPostsAct";
+import {
+  fetchUserPostsStart,
+  getSinglePost
+} from "./store/actions/userPostsAct";
 import { fetchUserAlbumsStart } from "./store/actions/userAlbumsAct";
 import { fetchAlbumPhotosStart } from "./store/actions/albumPhotosAct";
 import { fetchPostCommentsStart } from "./store/actions/postCommentsAct";
@@ -21,7 +24,7 @@ const UserPosts = React.lazy(() => import("./components/UserPosts"));
 const Detail = React.lazy(() => import("./components/Detail"));
 const UserAlbums = React.lazy(() => import("./components/UserAlbums"));
 const AlbumPhotos = React.lazy(() => import("./components/AlbumPhotos"));
-const PostComments = React.lazy(() => import("./components/PostComments"));
+const Post = React.lazy(() => import("./components/Post"));
 
 class App extends Component {
   componentDidMount() {
@@ -55,7 +58,7 @@ class App extends Component {
             />
             <Route
               path="/:userId/post/:postId"
-              component={withSuspense(PostComments, this.props)}
+              component={withSuspense(Post, this.props)}
             />
             <Route
               path="/:userId/albums"
@@ -83,8 +86,10 @@ const withSuspense = (Component, props) => {
   const { userAlbums, fetchUserAlbumsStart } = props;
   const { albumPhotos, fetchAlbumPhotosStart } = props;
   const { postComments, fetchPostCommentsStart } = props;
+  const { singlePost, getSinglePost } = props;
   const currentUrl = props.location.pathname.replace("/", "") || "Home";
   let data = [];
+  // let singlePost = [];
 
   if (currentUrl === "friends") {
     data = users;
@@ -108,12 +113,14 @@ const withSuspense = (Component, props) => {
       <Component
         {...props}
         data={data}
+        singlePost={singlePost}
         loading={loading}
         error={error}
         fetchUserPostsStart={fetchUserPostsStart}
         fetchUserAlbumsStart={fetchUserAlbumsStart}
         fetchAlbumPhotosStart={fetchAlbumPhotosStart}
         fetchPostCommentsStart={fetchPostCommentsStart}
+        getSinglePost={getSinglePost}
       />
     </React.Suspense>
   );
@@ -125,7 +132,8 @@ const mapStateToProps = state => {
     error: state.ui.error,
 
     users: state.users,
-    userPosts: state.userPosts,
+    userPosts: state.userPosts.userPosts,
+    singlePost: state.userPosts.singlePost,
     userAlbums: state.userAlbums,
     albumPhotos: state.albumPhotos,
     postComments: state.postComments
@@ -136,6 +144,7 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchUsersStart: () => dispatch(fetchUsersStart()),
     fetchUserPostsStart: userId => dispatch(fetchUserPostsStart(userId)),
+    getSinglePost: postId => dispatch(getSinglePost(postId)),
     fetchUserAlbumsStart: userId => dispatch(fetchUserAlbumsStart(userId)),
     fetchAlbumPhotosStart: albumId => dispatch(fetchAlbumPhotosStart(albumId)),
     fetchPostCommentsStart: postId => dispatch(fetchPostCommentsStart(postId))
