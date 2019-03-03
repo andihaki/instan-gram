@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { showSpinner, hideSpinner, hasErrorMessage } from "./uiAct";
+
 // list of action types
 export const FETCH_USERS = "[users] Fetch";
 export const FETCH_USERS_SUCCESS = "[users] Fetch Success";
@@ -16,8 +18,7 @@ export const fetchUsersSuccess = data => ({
 });
 
 export const fetchUsersError = error => ({
-  type: FETCH_USERS_ERROR,
-  payload: { error }
+  type: FETCH_USERS_ERROR
 });
 
 // middleware
@@ -25,10 +26,17 @@ const URL = "https://jsonplaceholder.typicode.com/users";
 export const fetchUsersStart = () => {
   return dispatch => {
     dispatch(fetchUsers());
+    dispatch(showSpinner());
 
     axios
       .get(URL)
-      .then(response => dispatch(fetchUsersSuccess(response.data)))
-      .catch(error => dispatch(fetchUsersError(error.message)));
+      .then(response => {
+        dispatch(fetchUsersSuccess(response.data));
+        dispatch(hideSpinner());
+      })
+      .catch(error => {
+        dispatch(fetchUsersError());
+        dispatch(hasErrorMessage(error.message));
+      });
   };
 };
