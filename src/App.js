@@ -28,17 +28,27 @@ const Post = React.lazy(() => import("./components/Post"));
 
 class App extends Component {
   componentDidMount() {
-    const currentUrl = this.props.location.pathname.replace("/", "") || "Home";
+    const { location, fetchUsersStart, fetchUserPostsStart } = this.props;
+    const { fetchUserAlbumsStart, fetchPostCommentsStart } = this.props;
+    const { fetchAlbumPhotosStart } = this.props;
+    const currentUrl = location.pathname.replace("/", "") || "Home";
 
+    // handle hard access at url
     if (currentUrl === "friends") {
-      this.props.fetchUsersStart();
+      fetchUsersStart();
     }
-    // naif, replace with regex soon
-    if (currentUrl.includes("posts")) {
-      this.props.fetchUserPostsStart(parseInt(currentUrl.split("/")[0]));
+
+    if (/posts\//i.test(currentUrl)) {
+      fetchUserPostsStart(parseInt(currentUrl.split("/")[0]));
     }
-    if (currentUrl.includes("albums")) {
-      this.props.fetchUserAlbumsStart(parseInt(currentUrl.split("/")[0]));
+    if (/post\//i.test(currentUrl)) {
+      fetchPostCommentsStart(parseInt(currentUrl.split("/")[0]));
+    }
+    if (/albums\//i.test(currentUrl)) {
+      fetchUserAlbumsStart(parseInt(currentUrl.split("/")[0]));
+    }
+    if (/album\//i.test(currentUrl)) {
+      fetchAlbumPhotosStart(parseInt(currentUrl.split("/")[0]));
     }
   }
   render() {
