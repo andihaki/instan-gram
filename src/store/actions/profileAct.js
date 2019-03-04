@@ -139,8 +139,8 @@ export const addPostStart = (userId, title, body) => {
   };
 };
 
-export const deletePostStart = userId => {
-  const URL = `https://jsonplaceholder.typicode.com/posts/${userId}`;
+export const deletePostStart = postId => {
+  const URL = `https://jsonplaceholder.typicode.com/posts/${postId}`;
   return dispatch => {
     dispatch(deletePost());
     dispatch(showSpinner());
@@ -148,7 +148,7 @@ export const deletePostStart = userId => {
     axios
       .delete(URL)
       .then(response => {
-        dispatch(deletePostSuccess(userId));
+        dispatch(deletePostSuccess(postId));
         dispatch(hideSpinner());
       })
       .catch(error => {
@@ -158,8 +158,8 @@ export const deletePostStart = userId => {
   };
 };
 
-export const editPostStart = (userId, title, body) => {
-  const URL = `https://jsonplaceholder.typicode.com/posts/${userId}`;
+export const editPostStart = (postId, title, body) => {
+  const URL = `https://jsonplaceholder.typicode.com/posts/${postId}`;
   return dispatch => {
     dispatch(editPost());
     dispatch(showSpinner());
@@ -167,6 +167,7 @@ export const editPostStart = (userId, title, body) => {
     axios
       .patch(URL, { title, body })
       .then(response => {
+        console.log("profile patch", response.data);
         dispatch(editPostSuccess(response.data));
         dispatch(hideSpinner());
       })

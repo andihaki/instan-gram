@@ -58,8 +58,8 @@ const editPostSuccess = (state, action) => {
   //   userPosts
   // });
   const userPosts = state.userPosts.map((item, index) => {
-    console.log(item, index, data.id);
-    if (index !== data.id) {
+    // console.log(item, index, data.id);
+    if (item.id !== data.id) {
       // This isn't the item we care about - keep it as-is
       return item;
     }

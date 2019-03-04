@@ -7,7 +7,8 @@ const EditDeleteButton = ({
   editPost,
   postId,
   title,
-  body
+  body,
+  showModal
 }) =>
   isOwner ? (
     <React.Fragment>
@@ -15,10 +16,17 @@ const EditDeleteButton = ({
         Delete
       </Button>
       <Divider type="vertical" />
-      <Button
+      {/* <Button
         type="primary"
         icon="edit"
         onClick={() => editPost(postId, "TEST title", "TEST body")}
+      >
+        Edit
+      </Button> */}
+      <Button
+        type="primary"
+        onClick={() => showModal(postId, title, body)}
+        icon="edit"
       >
         Edit
       </Button>

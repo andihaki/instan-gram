@@ -13,7 +13,8 @@ const UserPosts = ({
   fetchPostStart,
   isOwner,
   deletePost,
-  editPost
+  editPost,
+  showModal
 }) =>
   error ? (
     <Alert message={error} type="warning" showIcon />
@@ -46,6 +47,7 @@ const UserPosts = ({
             postId={item.id}
             title={item.title}
             body={item.body}
+            showModal={showModal}
           />
         </List.Item>
       )}
