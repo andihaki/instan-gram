@@ -3,7 +3,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # run this code
 
 1. git clone https://github.com/andihaki/instan-gram.git
-2. npm && npm start
+2. yarn && yarn start
 
 ## Additional Package
 
