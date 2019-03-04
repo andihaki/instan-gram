@@ -1,5 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# run this code
+
+1. git clone https://github.com/andihaki/instan-gram.git
+2. npm && npm start
+
 ## Additional Package
 
 - redux
