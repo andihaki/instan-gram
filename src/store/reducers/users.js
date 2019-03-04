@@ -7,7 +7,7 @@ import {
 const users = (state = [], action) => {
   switch (action.type) {
     case FETCH_USERS_SUCCESS:
-      return action.payload.data;
+      return action.payload.data.filter(id => id.id !== 1);
     case FETCH_USERS_ERROR:
     case FETCH_USERS:
     default:

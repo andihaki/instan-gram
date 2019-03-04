@@ -18,6 +18,12 @@ const CustomLayout = props => {
       fetchUsersStart();
     }
   };
+  const fetchProfile = () => {
+    const { profile, fetchProfileStart } = props;
+    if (!profile.length) {
+      fetchProfileStart(1);
+    }
+  };
 
   return (
     <Layout>
@@ -41,7 +47,9 @@ const CustomLayout = props => {
             <NavLink to="/not-found">404</NavLink>
           </Menu.Item>
           <Menu.Item key="4" style={{ float: "right" }}>
-            <NavLink to="/profile">Profile</NavLink>
+            <NavLink to="/profile" onClick={fetchProfile}>
+              Profile
+            </NavLink>
           </Menu.Item>
         </Menu>
       </Header>

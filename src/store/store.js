@@ -7,6 +7,7 @@ import ui from "./reducers/ui";
 import userAlbums from "./reducers/userAlbums";
 import albumPhotos from "./reducers/albumPhotos";
 import postComments from "./reducers/postComments";
+import profile from "./reducers/profile";
 
 const reducers = combineReducers({
   users: users,
@@ -14,7 +15,8 @@ const reducers = combineReducers({
   ui: ui,
   userAlbums: userAlbums,
   albumPhotos,
-  postComments
+  postComments,
+  profile
 });
 
 // dev tools

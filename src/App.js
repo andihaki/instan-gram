@@ -8,45 +8,50 @@ import { connect } from "react-redux";
 import { fetchUsersStart } from "./store/actions/usersAct";
 import {
   fetchUserPostsStart,
-  getSinglePost
+  getSinglePost,
+  addPostStart
 } from "./store/actions/userPostsAct";
 import { fetchUserAlbumsStart } from "./store/actions/userAlbumsAct";
 import { fetchAlbumPhotosStart } from "./store/actions/albumPhotosAct";
 import { fetchPostCommentsStart } from "./store/actions/postCommentsAct";
+import { fetchProfileStart } from "./store/actions/profileAct";
 
 // import Users from "./containers/Users";
 import Loading from "./components/Loading";
 
 const Home = () => <h1>HEY TAYO!!</h1>;
 const Oops = () => <h1>Not Found</h1>;
-const Profile = () => <h1>My Profile</h1>;
 
 const Users = React.lazy(() => import("./components/Users"));
 const UserPosts = React.lazy(() => import("./components/UserPosts"));
 const UserAlbums = React.lazy(() => import("./components/UserAlbums"));
 const AlbumPhotos = React.lazy(() => import("./components/AlbumPhotos"));
 const Post = React.lazy(() => import("./components/Post"));
+const Profile = React.lazy(() => import("./components/Profile"));
 
 class App extends Component {
   componentDidMount() {
     const { location, fetchUsersStart, fetchUserPostsStart } = this.props;
     const { fetchUserAlbumsStart, fetchPostCommentsStart } = this.props;
-    const { fetchAlbumPhotosStart } = this.props;
+    const { fetchAlbumPhotosStart, fetchProfileStart } = this.props;
     const currentUrl = location.pathname.replace("/", "") || "Home";
 
     // handle hard access at url
     if (currentUrl === "friends") {
       fetchUsersStart();
     }
+    if (currentUrl === "profile") {
+      fetchProfileStart(1);
+    }
 
     if (/posts/i.test(currentUrl)) {
       fetchUserPostsStart(parseInt(currentUrl.split("/")[0]));
     }
-    if (/post\//i.test(currentUrl)) {
-      fetchPostCommentsStart(parseInt(currentUrl.split("/")[0]));
-    }
     if (/albums/i.test(currentUrl)) {
       fetchUserAlbumsStart(parseInt(currentUrl.split("/")[0]));
+    }
+    if (/post\//i.test(currentUrl)) {
+      fetchPostCommentsStart(parseInt(currentUrl.split("/")[0]));
     }
     if (/album\//i.test(currentUrl)) {
       fetchAlbumPhotosStart(parseInt(currentUrl.split("/")[0]));
@@ -79,7 +84,10 @@ class App extends Component {
               path="/:userId/album/:albumId"
               component={withSuspense(AlbumPhotos, this.props)}
             />
-            <Route path="/profile" component={Profile} />
+            <Route
+              path="/profile"
+              component={withSuspense(Profile, this.props)}
+            />
             <Route component={Oops} />
           </Switch>
         </CustomLayout>
@@ -95,20 +103,24 @@ const withSuspense = (Component, props) => {
   const { albumPhotos, fetchAlbumPhotosStart } = props;
   const { postComments, fetchPostCommentsStart } = props;
   const { singlePost, getSinglePost } = props;
+  const { profile, addPostStart } = props;
   const currentUrl = props.location.pathname.replace("/", "") || "Home";
   let data = [];
-  // let singlePost = [];
 
   if (currentUrl === "friends") {
     data = users;
   }
-  // naif, replace with regex soon
+  if (currentUrl === "profile") {
+    data = profile;
+  }
+
   if (currentUrl.includes("album")) {
     data = albumPhotos;
   }
   if (currentUrl.includes("post")) {
     data = postComments;
   }
+
   if (currentUrl.includes("posts")) {
     data = userPosts;
   }
@@ -129,6 +141,7 @@ const withSuspense = (Component, props) => {
         fetchAlbumPhotosStart={fetchAlbumPhotosStart}
         fetchPostCommentsStart={fetchPostCommentsStart}
         getSinglePost={getSinglePost}
+        addPostStart={addPostStart}
       />
     </React.Suspense>
   );
@@ -144,7 +157,8 @@ const mapStateToProps = state => {
     singlePost: state.userPosts.singlePost,
     userAlbums: state.userAlbums,
     albumPhotos: state.albumPhotos,
-    postComments: state.postComments
+    postComments: state.postComments,
+    profile: state.profile
   };
 };
 
@@ -155,7 +169,10 @@ const mapDispatchToProps = dispatch => {
     getSinglePost: postId => dispatch(getSinglePost(postId)),
     fetchUserAlbumsStart: userId => dispatch(fetchUserAlbumsStart(userId)),
     fetchAlbumPhotosStart: albumId => dispatch(fetchAlbumPhotosStart(albumId)),
-    fetchPostCommentsStart: postId => dispatch(fetchPostCommentsStart(postId))
+    fetchPostCommentsStart: postId => dispatch(fetchPostCommentsStart(postId)),
+    fetchProfileStart: userId => dispatch(fetchProfileStart(userId)),
+    addPostStart: (userId, title, body) =>
+      dispatch(addPostStart(userId, title, body))
   };
 };
 

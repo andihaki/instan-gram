@@ -17,3 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Profile Page => Current User ID = 1
 - Friends Page => List of User ID != 1
 - Home Page => ???
+
+## progress
+
+- post = OK, then add to current posts
