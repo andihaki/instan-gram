@@ -13,7 +13,11 @@ import {
 } from "./store/actions/userPostsAct";
 import { fetchUserAlbumsStart } from "./store/actions/userAlbumsAct";
 import { fetchAlbumPhotosStart } from "./store/actions/albumPhotosAct";
-import { fetchPostCommentsStart } from "./store/actions/postCommentsAct";
+import {
+  fetchPostCommentsStart,
+  addPostComments,
+  deletePostComments
+} from "./store/actions/postCommentsAct";
 
 // import Users from "./containers/Users";
 import Loading from "./components/Loading";
@@ -102,8 +106,10 @@ const withSuspense = (Component, props) => {
   const { postComments, fetchPostCommentsStart } = props;
   const { singlePost, fetchPostStart } = props;
   const { profile, addPostStart } = props;
+  const { addPostComments, deletePostComments } = props;
   const currentUrl = props.location.pathname.replace("/", "") || "Home";
   let data = [];
+  const isOwner = parseInt(currentUrl[0]) === 1;
 
   if (currentUrl === "friends") {
     data = users;
@@ -140,6 +146,9 @@ const withSuspense = (Component, props) => {
         fetchPostCommentsStart={fetchPostCommentsStart}
         fetchPostStart={fetchPostStart}
         addPostStart={addPostStart}
+        addPostComments={addPostComments}
+        deletePostComments={deletePostComments}
+        isOwner={isOwner}
       />
     </React.Suspense>
   );
@@ -169,7 +178,9 @@ const mapDispatchToProps = dispatch => {
     fetchAlbumPhotosStart: albumId => dispatch(fetchAlbumPhotosStart(albumId)),
     fetchPostCommentsStart: postId => dispatch(fetchPostCommentsStart(postId)),
     addPostStart: (userId, title, body) =>
-      dispatch(addPostStart(userId, title, body))
+      dispatch(addPostStart(userId, title, body)),
+    addPostComments: (name, body) => dispatch(addPostComments(name, body)),
+    deletePostComments: id => dispatch(deletePostComments(id))
   };
 };
 

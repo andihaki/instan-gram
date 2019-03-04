@@ -14,11 +14,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## asumption
 
-- Profile Page => Current User ID = 1
+- Profile Page => with User ID = 1
 - Friends Page => List of User ID != 1
 - Home Page => **Random Post / Images from friends**
-- User can add post at Profile page
-- User can only delete comment at Profile page
+- User can add, edit & delete post at Profile page
+- User can only delete comment if URL contain User ID = 1 ????
+- User can add comment at any posts
 
 ## progress
 
