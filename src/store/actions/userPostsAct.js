@@ -6,7 +6,9 @@ export const FETCH_USER_POSTS = "[user posts] Fetch";
 export const FETCH_USER_POSTS_SUCCESS = "[user posts] Fetch Success";
 export const FETCH_USER_POSTS_ERROR = "[user posts] Fetch Error";
 
-export const GET_SINGLE_POST = "[user posts] Single Post";
+export const FETCH_POST = "[user posts] Fetch Post";
+export const FETCH_POST_ERROR = "[user posts] Fetch Post Error";
+export const FETCH_POST_SUCCESS = "[user posts] Fetch Post Success";
 
 export const ADD_POST = "[user posts] Add Post";
 export const ADD_POST_ERROR = "[user posts] Add Post Error";
@@ -29,9 +31,15 @@ export const fetchUserPostsError = () => ({
   type: FETCH_USER_POSTS_ERROR
 });
 
-export const getSinglePost = postId => ({
-  type: GET_SINGLE_POST,
-  payload: { postId }
+export const fetchPost = () => ({
+  type: FETCH_POST
+});
+export const fetchPostError = () => ({
+  type: FETCH_POST_ERROR
+});
+export const fetchPostSuccess = data => ({
+  type: FETCH_POST_SUCCESS,
+  payload: { data }
 });
 
 export const addPost = () => ({
@@ -53,6 +61,26 @@ export const fetchUserPostsStart = userId => {
       })
       .catch(error => {
         dispatch(fetchUserPostsError());
+        dispatch(hasErrorMessage(error.message));
+      });
+  };
+};
+
+// middleware
+export const fetchPostStart = postId => {
+  const URL = `https://jsonplaceholder.typicode.com/posts/${postId}`;
+  return dispatch => {
+    dispatch(fetchPost());
+    dispatch(showSpinner());
+
+    axios
+      .get(URL)
+      .then(response => {
+        dispatch(fetchPostSuccess(response.data));
+        dispatch(hideSpinner());
+      })
+      .catch(error => {
+        dispatch(fetchPostError());
         dispatch(hasErrorMessage(error.message));
       });
   };

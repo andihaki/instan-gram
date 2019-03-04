@@ -1,6 +1,6 @@
 import {
   FETCH_USER_POSTS_SUCCESS,
-  GET_SINGLE_POST
+  FETCH_POST_SUCCESS
 } from "../actions/userPostsAct";
 
 import { updatedObject } from "../utils";
@@ -11,27 +11,22 @@ const fetchUserPostsSuccess = (state, action) => {
   });
 };
 
-const getSinglePost = (state, action) => {
-  const { postId } = action.payload;
-  let singlePost = null;
-  if (state.userPosts.length) {
-    singlePost = state.userPosts.slice(postId - 1, postId)[0];
-  }
+const fetchPostSuccess = (state, action) => {
   return updatedObject(state, {
-    singlePost
+    singlePost: action.payload.data
   });
 };
 
 const initialState = {
   userPosts: [],
-  singlePost: { title: null, body: null }
+  singlePost: []
 };
 const userPosts = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_USER_POSTS_SUCCESS:
       return fetchUserPostsSuccess(state, action);
-    case GET_SINGLE_POST:
-      return getSinglePost(state, action);
+    case FETCH_POST_SUCCESS:
+      return fetchPostSuccess(state, action);
     default:
       return state;
   }

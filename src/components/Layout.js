@@ -19,10 +19,10 @@ const CustomLayout = props => {
     }
   };
   const fetchProfile = () => {
-    const { profile, fetchProfileStart } = props;
-    if (!profile.length) {
-      fetchProfileStart(1);
-    }
+    // const { profile, fetchProfileStart } = props;
+    // if (!profile.length) {
+    //   fetchProfileStart(1);
+    // }
   };
 
   return (

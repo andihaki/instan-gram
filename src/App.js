@@ -8,13 +8,12 @@ import { connect } from "react-redux";
 import { fetchUsersStart } from "./store/actions/usersAct";
 import {
   fetchUserPostsStart,
-  getSinglePost,
+  fetchPostStart,
   addPostStart
 } from "./store/actions/userPostsAct";
 import { fetchUserAlbumsStart } from "./store/actions/userAlbumsAct";
 import { fetchAlbumPhotosStart } from "./store/actions/albumPhotosAct";
 import { fetchPostCommentsStart } from "./store/actions/postCommentsAct";
-import { fetchProfileStart } from "./store/actions/profileAct";
 
 // import Users from "./containers/Users";
 import Loading from "./components/Loading";
@@ -27,21 +26,19 @@ const UserPosts = React.lazy(() => import("./components/UserPosts"));
 const UserAlbums = React.lazy(() => import("./components/UserAlbums"));
 const AlbumPhotos = React.lazy(() => import("./components/AlbumPhotos"));
 const Post = React.lazy(() => import("./components/Post"));
-const Profile = React.lazy(() => import("./components/Profile"));
+const Profile = React.lazy(() => import("./containers/Profile"));
 
 class App extends Component {
   componentDidMount() {
     const { location, fetchUsersStart, fetchUserPostsStart } = this.props;
     const { fetchUserAlbumsStart, fetchPostCommentsStart } = this.props;
-    const { fetchAlbumPhotosStart, fetchProfileStart } = this.props;
+    const { fetchAlbumPhotosStart } = this.props;
+    const { fetchPostStart } = this.props;
     const currentUrl = location.pathname.replace("/", "") || "Home";
 
     // handle hard access at url
     if (currentUrl === "friends") {
       fetchUsersStart();
-    }
-    if (currentUrl === "profile") {
-      fetchProfileStart(1);
     }
 
     if (/posts/i.test(currentUrl)) {
@@ -52,6 +49,7 @@ class App extends Component {
     }
     if (/post\//i.test(currentUrl)) {
       fetchPostCommentsStart(parseInt(currentUrl.split("/")[0]));
+      fetchPostStart(parseInt(currentUrl.split("/")[2]));
     }
     if (/album\//i.test(currentUrl)) {
       fetchAlbumPhotosStart(parseInt(currentUrl.split("/")[0]));
@@ -102,7 +100,7 @@ const withSuspense = (Component, props) => {
   const { userAlbums, fetchUserAlbumsStart } = props;
   const { albumPhotos, fetchAlbumPhotosStart } = props;
   const { postComments, fetchPostCommentsStart } = props;
-  const { singlePost, getSinglePost } = props;
+  const { singlePost, fetchPostStart } = props;
   const { profile, addPostStart } = props;
   const currentUrl = props.location.pathname.replace("/", "") || "Home";
   let data = [];
@@ -140,7 +138,7 @@ const withSuspense = (Component, props) => {
         fetchUserAlbumsStart={fetchUserAlbumsStart}
         fetchAlbumPhotosStart={fetchAlbumPhotosStart}
         fetchPostCommentsStart={fetchPostCommentsStart}
-        getSinglePost={getSinglePost}
+        fetchPostStart={fetchPostStart}
         addPostStart={addPostStart}
       />
     </React.Suspense>
@@ -166,11 +164,10 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchUsersStart: () => dispatch(fetchUsersStart()),
     fetchUserPostsStart: userId => dispatch(fetchUserPostsStart(userId)),
-    getSinglePost: postId => dispatch(getSinglePost(postId)),
+    fetchPostStart: postId => dispatch(fetchPostStart(postId)),
     fetchUserAlbumsStart: userId => dispatch(fetchUserAlbumsStart(userId)),
     fetchAlbumPhotosStart: albumId => dispatch(fetchAlbumPhotosStart(albumId)),
     fetchPostCommentsStart: postId => dispatch(fetchPostCommentsStart(postId)),
-    fetchProfileStart: userId => dispatch(fetchProfileStart(userId)),
     addPostStart: (userId, title, body) =>
       dispatch(addPostStart(userId, title, body))
   };

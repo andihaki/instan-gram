@@ -20,4 +20,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## progress
 
-- post = OK, then add to current posts
+x post = OK, then add to current posts
+
+- edit = OK
+  - add form to fill **title** and **body**
+  - bugs, delete one item, then update. wrong update item
